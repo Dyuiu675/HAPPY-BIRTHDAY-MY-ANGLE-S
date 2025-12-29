@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        :root {
+            --primary-glow: #ff69b4;
+            --accent-glow: #00ffff;
+        }
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #050505;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- LAYAR AWAL (KLIK) --- */
+        #overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 100; cursor: pointer;
+            transition: 0.8s;
+        }
+        #overlay img {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+        #overlay h2 {
+            text-transform: uppercase; letter-spacing: 5px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* --- CANVAS --- */
+        canvas { display: block; }
+
+        /* --- ICON PESAN --- */
+        #message-icon {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px;
+            background: var(--primary-glow);
+            border-radius: 50%;
+            display: none; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 0 15px var(--primary-glow);
+            font-size: 30px; animation: pulse 2s infinite;
+            z-index: 50;
+        }
+
+        /* --- KOTAK PESAN --- */
+        #message-box {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 80%; max-width: 400px;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 30px; border-radius: 15px;
+            border: 1px solid var(--primary-glow);
+            text-align: center; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 60;
+        }
+        #message-box.active { transform: translate(-50%, -50%) scale(1); }
+        #message-box h3 { margin-top: 0; color: var(--primary-glow); }
+        #message-box p { line-height: 1.6; font-size: 1.1em; }
+        #close-btn {
+            margin-top: 20px; padding: 10px 20px;
+            background: transparent; border: 1px solid white;
+            color: white; cursor: pointer; border-radius: 5px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" onclick="startApp()">
+        <img src="https://via.placeholder.com/150" alt="Foto Profil">
+        <h2>KLIK UNTUK HADIAH</h2>
+    </div>
+
+    <div id="message-icon" onclick="toggleMessage()">✉️</div>
+
+    <div id="message-box">
+        <h3>Selamat Ulang Tahun! 🎂</h3>
+        <p id="wedding-text">
+            Semoga harimu dipenuhi dengan kebahagiaan dan tawa. 
+            Terima kasih telah menjadi orang yang luar biasa! 
+            Semoga semua impianmu menjadi kenyataan tahun ini. ✨
+        </p>
+        <button id="close-btn" onclick="toggleMessage()">Tutup</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let flowers = [];
+        let particles = [];
+        let animationStarted = false;
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.opacity = Math.random();
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y > canvas.height) this.y = -10;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Flower {
+            constructor(x, targetY, color) {
+                this.x = x;
+                this.y = canvas.height + 100;
+                this.targetY = targetY;
+                this.color = color;
+                this.petalSize = 0;
+                this.maxPetalSize = 25 + Math.random() * 10;
+                this.bloomed = false;
+            }
+            update() {
+                if (this.y > this.targetY) {
+                    this.y -= 3;
+                } else {
+                    if (this.petalSize < this.maxPetalSize) {
+                        this.petalSize += 0.5;
+                    } else {
+                        this.bloomed = true;
+                    }
+                }
+            }
+            draw() {
+                // Batang
+                ctx.strokeStyle = '#2d5a27';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(this.x, canvas.height);
+                ctx.lineTo(this.x, this.y);
+                ctx.stroke();
+
+                if (this.y <= this.targetY + 50) {
+                    // Kelopak
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = this.color;
+                    for (let i = 0; i < 6; i++) {
+                        ctx.rotate(Math.PI / 3);
+                        ctx.fillStyle = this.color;
+                        ctx.beginPath();
+                        ctx.ellipse(this.petalSize, 0, this.petalSize, this.petalSize/2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    // Putik
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.petalSize/3, 0, Math.PI * 2);
+                    ctx.fillStyle = 'yellow';
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+        }
+
+        function startApp() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('message-icon').style.display = 'flex';
+                init();
+            }, 800);
+        }
+
+        function init() {
+            animationStarted = true;
+            // Buat bunga
+            flowers.push(new Flower(canvas.width/2, canvas.height/2, '#ff69b4'));
+            flowers.push(new Flower(canvas.width/2 - 100, canvas.height/2 + 80, '#00ffff'));
+            flowers.push(new Flower(canvas.width/2 + 100, canvas.height/2 + 80, '#da70d6'));
+            
+            // Buat partikel
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+            animate();
+        }
+
+        function toggleMessage() {
+            document.getElementById('message-box').classList.toggle('active');
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)'; // Efek trail
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            flowers.forEach(f => {
+                f.update();
+                f.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
