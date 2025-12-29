@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎂</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:radial-gradient(circle at top,#ffdde1,#ee9ca7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Comic Sans MS', cursive;
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+    color:#fff;
+    z-index:2;
+    position:relative;
+}
+
+h1{
+    font-size:2.6em;
+    text-shadow:0 4px 15px rgba(0,0,0,.4);
+}
+
+button{
+    padding:14px 30px;
+    font-size:1.1em;
+    border:none;
+    border-radius:40px;
+    background:#ff4d6d;
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+    transition:.3s;
+}
+button:hover{transform:scale(1.1)}
+
+#cake{
+    display:none;
+    margin-top:40px;
+}
+
+/* ====== CAKE HD - Lebih Skematik dan Lucu ====== */
+.cake{
+    position:relative;
+    width:280px; /* Sedikit diperbesar untuk detail lebih */
+    margin:auto;
+}
+
+.layer{
+    width:100%;
+    height:80px; /* Sedikit lebih tinggi */
+    border-radius:25px; /* Lebih bulat untuk lucu */
+    box-shadow:0 10px 20px rgba(0,0,0,.3);
+    position:relative;
+}
+
+.layer1{background:#ffb703;}
+.layer2{background:#fb8500; margin-top:-15px;} /* Overlap lebih untuk efek stacking */
+.layer3{background:#ffd166; margin-top:-15px;}
+
+.cream{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:25px; /* Lebih tebal */
+    background:#fff;
+    border-radius:25px 25px 15px 15px;
+}
+
+/* Tambahan hiasan lucu: Cherry di atas */
+.cherry{
+    position:absolute;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:20px;
+    height:20px;
+    background:#d00000;
+    border-radius:50%;
+    box-shadow:0 2px 5px rgba(0,0,0,.3);
+}
+.cherry::before{
+    content:'';
+    position:absolute;
+    top:-5px;
+    left:50%;
+    transform:translateX(-50%);
+    width:10px;
+    height:10px;
+    background:#228b22;
+    border-radius:50%;
+}
+
+/* Tambahan sprinkles lucu di layer atas */
+.sprinkles{
+    position:absolute;
+    top:10px;
+    width:100%;
+    height:10px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+}
+.sprinkle{
+    width:5px;
+    height:5px;
+    background:#ff6b6b;
+    border-radius:50%;
+    box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+
+/* ====== CANDLE - Lebih Lucu dengan Animasi ====== */
+.candle{
+    width:15px; /* Sedikit lebih lebar */
+    height:50px; /* Lebih tinggi */
+    background:#fff;
+    position:absolute;
+    top:-55px;
+    left:50%;
+    transform:translateX(-50%);
+    cursor:pointer;
+    border-radius:5px 5px 0 0;
+}
+
+.flame{
+    width:20px;
+    height:20px;
+    background:orange;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; /* Bentuk api lebih realistis */
+    position:absolute;
+    top:-20px;
+    left:-2.5px;
+    animation:flicker .25s infinite alternate;
+}
+
+@keyframes flicker{
+    from{transform:scale(1);}
+    to{transform:scale(1.4);}
+}
+
+/* ====== LETTER - Dipindah ke Kanan dan Bisa Di-Scroll ====== */
+.letter{
+    font-size:42px;
+    position:absolute;
+    right:20px; /* Pindah ke kanan */
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    animation:bounce 1.5s infinite;
+    z-index:3;
+}
+@keyframes bounce{
+    50%{transform:translateY(-10px);}
+}
+
+/* ====== NOTE - Bisa Di-Scroll Jika Panjang ====== */
+#note{
+    display:none;
+    background:#fff;
+    color:#333;
+    padding:20px;
+    border-radius:15px;
+    margin:15px auto;
+    max-width:300px;
+    max-height:200px; /* Batasi tinggi untuk scroll */
+    overflow-y:auto; /* Scroll vertikal */
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+/* ====== PHOTO ====== */
+.photo-box{
+    margin-top:15px;
+}
+.photo-box img{
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:50%;
+    border:5px solid #fff;
+    box-shadow:0 5px 15px rgba(0,0,0,.4);
+}
+
+/* ====== FIREWORKS ====== */
+.firework{
+    position:fixed;
+    width:6px;
+    height:6px;
+    background:transparent;
+    border-radius:50%;
+    box-shadow:
+    0 0 #fff,
+    20px 0 red,
+    -20px 0 yellow,
+    0 20px cyan,
+    0 -20px pink;
+    animation:boom 1s ease-out forwards;
+}
+@keyframes boom{
+    to{
+        box-shadow:
+        0 0 transparent,
+        80px 0 transparent,
+        -80px 0 transparent,
+        0 80px transparent,
+        0 -80px transparent;
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎉 Selamat Ulang Tahun 🎉</h1>
+    <button onclick="start()">Klik Kejutan 🎂</button>
+
+    <div id="cake">
+        <div class="cake">
+            <div class="candle" onclick="blow()">
+                <div class="flame" id="flame"></div>
+            </div>
+            <div class="cherry"></div> <!-- Cherry lucu di atas -->
+            <div class="layer layer3">
+                <div class="sprinkles">
+                    <div class="sprinkle"></div>
+                    <div class="sprinkle"></div>
+                    <div class="sprinkle"></div>
+                    <div class="sprinkle"></div>
+                    <div class="sprinkle"></div>
+                </div>
+            </div>
+            <div class="layer layer2"></div>
+            <div class="layer layer1"></div>
+            <div class="cream"></div>
+        </div>
+
+        <div class="photo-box">
+            <input type="file" accept="image/*" onchange="loadPhoto(event)">
+            <img id="photo">
+        </div>
+
+        <div class="letter" onclick="toggleNote()">✉️</div>
+
+        <div id="note">
+            <!-- EDIT PESAN DI SINI -->
+            <h3>Untuk Kamu 💖</h3>
+            <p>
+            Selamat ulang tahun 🎂  
+            Semoga semua doa baik menjadi nyata  
+            dan senyummu selalu ada hari ini ✨
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- GANTI lagu.mp3 DENGAN FILE MUSIK KAMU -->
+<audio id="music" src="lagu.mp3" loop></audio>
+
+<script>
+function start(){
+    document.getElementById("cake").style.display="block";
+    document.getElementById("music").play();
+    fireworks();
+}
+
+function toggleNote(){
+    const n=document.getElementById("note");
+    n.style.display=n.style.display==="block"?"none":"block";
+}
+
+function blow(){
+    document.getElementById("flame").style.display="none";
+}
+
+function loadPhoto(e){
+    document.getElementById("photo").src=URL.createObjectURL(e.target.files[0]);
+}
+
+function fireworks(){
+    for(let i=0;i<6;i++){
+        const f=document.createElement("div");
+        f.className="firework";
+        f.style.left=Math.random()*window.innerWidth+"px";
+        f.style.top=Math.random()*window.innerHeight+"px";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
+    }
+}
+</script>
+
+</body>
+</html>
