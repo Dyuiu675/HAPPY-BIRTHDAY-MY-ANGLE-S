@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Allura&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    background:#000;
+    font-family:'Playfair Display',serif;
+    overflow:hidden;
+}
+
+/* ===== BACKGROUND OVERLAY ===== */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at center,rgba(255,255,255,.08),#000 70%);
+    z-index:-1;
+}
+
+/* ===== STORY ===== */
+.story{
+    display:flex;
+    width:400%;
+    height:100vh;
+    transition:transform 1s cubic-bezier(.77,0,.18,1);
+}
+
+.slide{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    color:#fff;
+    position:relative;
+}
+
+/* ===== CARD ===== */
+.card{
+    max-width:360px;
+    padding:38px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 40px 90px rgba(0,0,0,.7);
+    animation:cinema 1.2s ease;
+}
+
+@keyframes cinema{
+    from{opacity:0; transform:scale(.9) translateY(50px)}
+    to{opacity:1; transform:scale(1) translateY(0)}
+}
+
+h1,h2{margin:0 0 18px}
+h1{font-size:2.4em}
+h2{font-size:1.6em}
+
+.script{
+    font-family:'Allura',cursive;
+    font-size:2.4em;
+    color:#f5e6c8;
+}
+
+p{
+    line-height:1.9;
+    font-size:1.05em;
+}
+
+/* ===== PHOTO ===== */
+.photo{
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    border:3px solid #d4af37;
+    object-fit:cover;
+    margin:18px auto;
+    box-shadow:0 25px 50px rgba(0,0,0,.8);
+    animation:photoZoom 10s ease-in-out infinite;
+}
+
+@keyframes photoZoom{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.08)}
+    100%{transform:scale(1)}
+}
+
+/* ===== NAV BUTTON ===== */
+.nav{
+    position:fixed;
+    bottom:30px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:0 40px;
+    z-index:20;
+}
+
+.nav button{
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4);
+    color:#fff;
+    font-size:28px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
+}
+.nav button:hover{transform:scale(1.1)}
+
+/* ===== MUSIC BUTTON ===== */
+.music-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:20;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:25px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+}
+
+/* ===== SPARKLING ===== */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:#fff;
+    box-shadow:0 0 8px #fff;
+    opacity:.8;
+    animation:twinkle 4s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.2}
+    to{opacity:1}
+}
+
+.spark{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#d4af37;
+    opacity:.7;
+    animation:float 8s linear infinite;
+}
+
+@keyframes float{
+    to{transform:translateY(-120vh); opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="story" id="story">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+        <div class="card">
+            <h1>Happy Birthday</h1>
+            <div class="script">my favorite person</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <div class="card">
+            <h2>Untuk Kamu</h2>
+            <p>
+            CIE CIE yang ulang tahun
+            Di hari ini,di jam ini ada malaikat cantik dan menawan   
+            yang lahir
+            semesta seakan melambat  
+            hanya untuk merayakan  
+            kehadiranmu 🤍
+            </p>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 FOTO LANGSUNG -->
+    <div class="slide">
+        <div class="card">
+            <h2>Kenangan</h2>
+            <img src="foto.jpg" class="photo" alt="Foto Kenangan">
+            <p>Satu momen kecil, arti besar.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <div class="card">
+            <p>
+            Semoga semua hal baik selalu nyertain kamu,  
+            dan semoga juga satu satu impian mu tercapai     
+            dan menjadi pribadi yang lebih baik lagi  
+            untuk kedepannya 🤍
+            </p>
+            <h2>Selamat bertambah usia</h2>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+    <button onclick="prev()">⬅</button>
+    <button onclick="next()">➡</button>
+</div>
+
+<!-- MUSIC -->
+<button class="music-btn" onclick="toggleMusic()">▶️ Play Music</button>
+<audio id="music" src="lagu.mp3" loop></audio>
+
+<script>
+let index=0;
+const story=document.getElementById("story");
+const music=document.getElementById("music");
+let playing=false;
+
+/* navigation */
+function update(){
+    story.style.transform=`translateX(-${index*100}vw)`;
+}
+function next(){ if(index<3){index++; update()} }
+function prev(){ if(index>0){index--; update()} }
+
+/* music */
+function toggleMusic(){
+    if(!playing){
+        music.play();
+        playing=true;
+        document.querySelector(".music-btn").innerHTML="⏸ Pause Music";
+    }else{
+        music.pause();
+        playing=false;
+        document.querySelector(".music-btn").innerHTML="▶️ Play Music";
+    }
+}
+
+/* stars */
+for(let i=0;i<140;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    document.body.appendChild(s);
+}
+
+/* gold sparks */
+setInterval(()=>{
+    const g=document.createElement("div");
+    g.className="spark";
+    g.style.left=Math.random()*100+"vw";
+    g.style.bottom="-10px";
+    document.body.appendChild(g);
+    setTimeout(()=>g.remove(),8000);
+},350);
+</script>
+
+</body>
+</html>
